@@ -1,92 +1,56 @@
-class Heap{
-    heap=new Array()
-    constructor(arr){      
-        this.buildheap(arr)
-    }
-    buildheap(arr){
-        this.heap=arr
-        for(let i=Math.floor(this.parent(this.heap.length-1));i>=0;i--){
-            this.shiftdown(i)
-        }
-    }
-    shiftdown(currentidx){
-        let end=this.heap.length-1;
-        let leftidx=this.leftchild(currentidx)
-        while(leftidx<=end){
-           let rightidx=this.rightchild(currentidx)
-            let indextoshift
-            if(rightidx<=end&&this.heap[rightidx]<this.heap[leftidx]){
-                indextoshift=rightidx
-            }else{
-                indextoshift=leftidx
-            }
-            if(this.heap[indextoshift]<this.heap[currentidx]){
-                this.swap(indextoshift,currentidx)
-                currentidx=indextoshift
-                leftidx=this.leftchild(currentidx)
-            }else{
-                return
-            }
-        }
-    }
-    shiftup(currentidx){
-        let parent=Math.floor(this.parent(currentidx))
-        while(parent>=0 && this.heap[parent]>this.heap[currentidx]){
-            this.swap(parent,currentidx)
-        currentidx=parent
-        parent=Math.floor(this.parent(currentidx))
-        }
-        
-    }
-    remove(){
-        this.swap(0,this.heap.length-1)
-        this.heap.pop()
-        this.shiftdown(0)
 
+
+class Heap {
+    constructor(arr) {
+      this.heap = arr;
+      this.buildheap();
     }
-    large(){
-        let l=this.heap[0]
-        for(let i=0;i<this.heap.length;i++){
-            if(this.heap[i]>l){
-                l=this.heap[i]
-            }
+  
+    buildheap() {
+      const n = this.heap.length;
+      for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+        this.shiftdown(i, n);
+      }
+    }
+  
+    shiftdown(currentidx, end) {
+      let leftidx = 2 * currentidx + 1;
+      while (leftidx < end) {
+        let rightidx = 2 * currentidx + 2;
+        let indextoshift;
+        if (rightidx < end && this.heap[rightidx] > this.heap[leftidx]) {
+          indextoshift = rightidx;
+        } else {
+          indextoshift = leftidx;
         }
-        return l
-    }
-    display(){
-        for(let i=0;i<this.heap.length;i++){
-            console.log(this.heap[i])
+        if (this.heap[indextoshift] > this.heap[currentidx]) {
+          this.swap(indextoshift, currentidx);
+          currentidx = indextoshift;
+          leftidx = 2 * currentidx + 1;
+        } else {
+          return;
         }
+      }
     }
-    insert(value){
-        this.heap.push(value)
-        this.shiftup(this.heap.length-1)
+  
+    swap(a, b) {
+      let temp = this.heap[a];
+      this.heap[a] = this.heap[b];
+      this.heap[b] = temp;
     }
-    leftchild(i){
-        return (i*2)+1
+  
+    heapSort() {
+      const n = this.heap.length;
+      for (let i = n; i > 0; i--) {
+        this.swap(0, i - 1);
+        this.shiftdown(0, i - 1);
+      }
+      return this.heap;
     }
-    rightchild(i){
-        return (i*2)+2
-    }
-    parent(i){
-        return Math.floor((i-1)/2)
-    }
-    swap(i,j){
-        let temp=this.heap[i]
-        this.heap[i]= this.heap[j]
-        this.heap[j]=temp
-    }
-}
-let arr=[6,2,8]
-let h=new Heap(arr)
-h.display()
-console.log("------------------------");
-console.log(h.large());
-h.insert(1)
-h.insert(5)
-h.insert(15)
-h.display()
-console.log("------------------------");
-h.remove()
-h.display()
-console.log(h.large());
+  }
+  
+  let arr = [6, 2, 8, 1, 5];
+  let h = new Heap(arr);
+  const sortedArray = h.heapSort();
+  console.log("Sorted Array:", sortedArray);
+  
