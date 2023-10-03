@@ -1,4 +1,3 @@
-
 class Node{
     constructor(data){
         this.data=data
@@ -66,7 +65,6 @@ class linkedList{
             temp=temp.next
         }
     }
-
 }
 let list=new linkedList()
 list.addnode(10)
